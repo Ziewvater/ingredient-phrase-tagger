@@ -1,0 +1,6 @@
+services:
+  parser:
+    image: iparser
+    volumes:
+    - ./output:/app/output
+    command: /bin/bash -c "python3 bin/parse-ingredients.py"

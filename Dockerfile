@@ -10,14 +10,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0.0-rc1"
 
-RUN apt-get update -y && \
-    apt-get install -y git python3.9 python3-setuptools python3-pip && \
-    rm -Rf /usr/share/doc && \
-    rm -Rf /usr/share/man && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update -y
+RUN apt-get install -y git python3.9 python3-setuptools python3-pip
+RUN rm -Rf /usr/share/doc
+RUN rm -Rf /usr/share/man
+RUN apt-get autoremove -y
+RUN rm -rf /var/lib/apt/lists/*
 
-ADD . /app
+COPY . /app
 WORKDIR /app
 
 RUN pip3 install .
