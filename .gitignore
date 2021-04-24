@@ -72,3 +72,4 @@ target/
 
 # asdf version manager
 .tool-versions
+/venv_linux/
