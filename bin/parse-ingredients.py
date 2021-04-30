@@ -5,10 +5,7 @@ import os
 import subprocess
 from tqdm import tqdm
 from ingredient_phrase_tagger.training import utils
-
-def safeStr(obj):
-    try: return str(obj).encode('ascii', 'ignore').decode('ascii')
-    except: return ""
+from folder_paths import input_folder, output_folder
 
 def _exec_crf_test(input_text, model_path='/app/models/model.crfmodel'):
 
@@ -34,13 +31,15 @@ def _convert_crf_output_to_json(crf_output):
 
 def main():
     """Read all the files in inputs folder, place a parsed file in with the same name in the output folder"""
-
-    from folder_paths import input_folder,output_folder
-
     files = os.listdir(input_folder)
+    files_in_output_folder = os.listdir(output_folder)
 
     with tqdm(total=len(files)) as bar:
+
         for file in files:
+            # skip completed files
+            if file in files_in_output_folder:
+                continue
 
             with open(os.path.join(input_folder,file),encoding='utf-8') as f:
                 raw_ingredient_lines = json.load(f)

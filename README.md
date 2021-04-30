@@ -1,140 +1,54 @@
-# CRF Ingredient Phrase Tagger
-
-[![CircleCI](https://circleci.com/gh/mtlynch/ingredient-phrase-tagger.svg?style=svg&circle-token=14da35d490833b7c427e7759d8f7cfc0ba513b51)](https://circleci.com/gh/mtlynch/ingredient-phrase-tagger) [![Docker Pulls](https://img.shields.io/docker/pulls/mtlynch/ingredient-phrase-tagger.svg?maxAge=604800)](https://hub.docker.com/r/mtlynch/ingredient-phrase-tagger/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
-
-## Fork Notes
-
-This is a fork of the original [NY Times ingredient-phrase-tagger](https://github.com/NYTimes/ingredient-phrase-tagger). This fork is maintained by [Michael Lynch](https://github.com/mtlynch)
-
-This fork maintains the design of the original ingredient-phrase-tagger, but adds bugfixes and additional features to aid in future development:
-
-* Adds a [Docker image](https://hub.docker.com/r/mtlynch/ingredient-phrase-tagger/) for easy deployment.
-* Adds a [continuous integration build](https://travis-ci.org/mtlynch/ingredient-phrase-tagger) on every check-in.
-* Adds unit tests.
-* Adds end-to-end tests.
-* Enforces rules for source formatting and linting.
-
-These improvements were described in a series of blog posts on [mtlynch.io](https://mtlynch.io):
-
-* [Resurrecting a Dead Library: Part One - Resuscitation](https://mtlynch.io/resurrecting-1/)
-* [Resurrecting a Dead Library: Part Two - Stabilization](https://mtlynch.io/resurrecting-2/)
-* [Resurrecting a Dead Library: Part Three - Rehabilitation](https://mtlynch.io/resurrecting-3/)
-
-## Zestful
-
-[Zestful](https://zestfuldata.com) is a managed ingredient-parsing service based on this library. It has higher accuracy and more frequent updates:
-
-* https://zestfuldata.com
-
-## Overview
-
-This repo contains scripts to extract the Quantity, Unit, Name, and Comments
-from unstructured ingredient phrases. We use it on [Cooking][nytc] to format
-incoming recipes. Given the following input:
-
-    1 pound carrots, young ones if possible
-    Kosher salt, to taste
-    2 tablespoons sherry vinegar
-    2 tablespoons honey
-    2 tablespoons extra-virgin olive oil
-    1 medium-size shallot, peeled and finely diced
-    1/2 teaspoon fresh thyme leaves, finely chopped
-    Black pepper, to taste
-
-Our tool produces something like:
-
-    {
-        "qty":     "1",
-        "unit":    "pound"
-        "name":    "carrots",
-        "other":   ",",
-        "comment": "young ones if possible",
-        "input":   "1 pound carrots, young ones if possible",
-        "display": "<span class='qty'>1</span><span class='unit'>pound</span><span class='name'>carrots</span><span class='other'>,</span><span class='comment'>young ones if possible</span>",
-    }
-
-We use a conditional random field model (CRF) to extract tags from labelled
-training data, which was tagged by human news assistants. We wrote about our
-approach [on the New York Times Open blog][openblog]. More information about
-CRFs can be found [here][crf_tut].
-
-On a 2012 Macbook Pro, training the model takes roughly 30 minutes for 130k
-examples using the [CRF++][crfpp] library.
-
-## Development
-
-On OSX:
-
-```bash
-brew install crf++
-python3 setup.py install
-```
-
-Docker:
-
-```bash
-docker pull mtlynch/ingredient-phrase-tagger
-```
-
-## Quick Start
-
-```bash
-docker run -it mtlynch/ingredient-phrase-tagger bash
-
-# Train a new model
-MODEL_DIR=$(mktemp -d)
-bin/train-prod-model "$MODEL_DIR"
-MODEL_FILE=$(find $MODEL_DIR -name '*.crfmodel')
-
-# Parse some ingredients
-echo '
-2 tablespoons honey
-1/2 cup flour
-Black pepper, to taste' | bin/parse-ingredients.py --model-file $MODEL_FILE
-```
-
-```text
-[
-  {
-    "display": "<span class='qty'>2</span><span class='unit'>tablespoons</span><span class='name'>honey</span>",
-    "input": "2 tablespoons honey",
-    "name": "honey",
-    "qty": "2",
-    "unit": "tablespoon"
-  },
-  {
-    "display": "<span class='qty'>1/2</span><span class='unit'>cup</span><span class='name'>flour</span>",
-    "input": "1/2 cup flour",
-    "name": "flour",
-    "qty": "1/2",
-    "unit": "cup"
-  },
-  {
-    "comment": "to taste",
-    "display": "<span class='name'>Black pepper</span><span class='other'>,</span><span class='comment'>to taste</span>",
-    "input": "Black pepper, to taste",
-    "name": "Black pepper",
-    "other": ","
-  }
-]
-```
-
-## Authors
-
-* [Erica Greene][eg]
-* [Adam Mckaig][am]
-* [Michael Lynch](https://github.com/mtlynch)
+# Plug and play phrase-tagger
 
 
-## License
+## About
+This is an improvement of the [CRF Ingredient Phrase Tagger](https://github.com/mtlynch/ingredient-phrase-tagger) by [Michael Lynch](https://github.com/mtlynch)
 
-[Apache 2.0][license].
+While Michael made several improvements over the original [NY Times ingredient-phrase-tagger](https://github.com/NYTimes/ingredient-phrase-tagger)
+it was still far from plug and play.
+
+## Improvements
+* Comes with a model pre-trained and included.
+* Can read from files which is much more useful than piping input through bash.
 
 
-[nytc]:     http://cooking.nytimes.com
-[crf_tut]:  http://people.cs.umass.edu/~mccallum/papers/crf-tutorial.pdf
-[crfpp]:    https://taku910.github.io/crfpp/
-[openblog]: http://open.blogs.nytimes.com/2015/04/09/extracting-structured-data-from-recipes-using-conditional-random-fields/?_r=0
-[eg]:       mailto:ericagreene@gmail.com
-[am]:       http://github.com/adammck
-[license]:  https://github.com/NYTimes/ingredient-phrase-tagger/blob/master/LICENSE.md
+
+The app reads and converts every file in the input folder and places the parsed copy in the output folder.
+All the included presents (see below) will use `input` and `ouput` folders in the current directory unless other arguments are passed. The image will create thes folders if they do not exist.
+
+
+## Running the image
+You can run the image in 3 ways:
+
+##### Docker-compose
+If you just want to parse some files you can run
+
+* ```docker-compose run --rm parser```
+
+This pulls the image from my docker repo, run with default settings: directories named `input` and `output` in the same directory.
+
+##### Docker-run
+Run the image directly from docker hub, you do not even need to download this github repo for this work. 
+The below command will again use `input` and `output` folder in the current directory. Change the paths to adjust the input and output folderss.
+* docker run --rm -v "$(pwd)"/output:/app/output -v "$(pwd)"/input:/app/input shivan2418/main_repo:iparser
+
+#### Build locally and run
+If you want maximum control you can build the image locally and then run it.  
+* ```docker build -t iparser .```
+
+* ```docker run --rm -v "$(pwd)"/output:/app/output -v "$(pwd)"/input:/app/input iparser```
+
+
+#### Known issues
+On Linux, all the files that you create will be owned by the root. You should run `sudo chown -R -c youruser:youruser output` after running the image to get ownership of the files. 
+ 
+#### Ingredient format
+Each input must be a json file in the form of a list of strings as if you `json.dump` as list of strings in python.
+
+sample_recipe.json
+    
+`["1 (8 ounce) package cream cheese, softened", "3 cups salsa, divided", "4 green onions, chopped, divided", "2 ½ cups Cheddar cheese, divided", "2 ½ cups shredded Monterey Jack cheese, divided", "12 (8 inch) flour tortillas", "1 cup peanut butter", "1 cup white sugar", "1 egg", "1 cup butter flavored shortening", "¾ cup white sugar", "¾ cup brown sugar", "2 eggs", "2 teaspoons Mexican vanilla extract", "2 ¼ cups all-purpose flour", "1 teaspoon baking soda", "1 teaspoon salt", "2 cups milk chocolate chips", "3 tablespoons apricot preserves", "1 teaspoon fresh ginger paste (such as Gourmet Garden™)", "½ teaspoon minced fresh rosemary", "2 (8 ounce) boneless, skinless chicken breasts", "1 teaspoon vegetable oil", "salt and ground black pepper to taste", "½ cup mayonnaise", "2 tablespoons Sriracha sauce", "1 pound bay scallops (about 36 small scallops)", "1 pinch coarse salt", "1 pinch freshly cracked black pepper", "12 slices bacon, cut into thirds", "1  serving olive oil cooking spray", "2 large russet potatoes, scrubbed", "1 tablespoon peanut oil", "½ teaspoon coarse sea salt", "cooking spray", "½ cup all-purpose flour", "¼ cup white sugar", "⅛ cup water", "1 large egg, separated", "1 ½ teaspoons melted butter", "½ teaspoon baking powder", "½ teaspoon vanilla extract", "1 pinch salt", "2 tablespoons confectioners' sugar, or to taste", "1 red grapefruit, refrigerated", "1 tablespoon softened butter", "1 tablespoon brown sugar", "2 teaspoons brown sugar", "aluminum foil", "½ teaspoon ground cinnamon", "2 tablespoons coarsely chopped pecans", "1 tablespoon brown sugar", "1 teaspoon all-purpose flour", "¼ teaspoon apple pie spice", "2 medium apples, cored and cut into wedges", "1 tablespoon butter, melted"]`
+
+
+
+

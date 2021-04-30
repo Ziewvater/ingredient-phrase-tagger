@@ -1,6 +1,7 @@
 services:
   parser:
-    image: iparser
+    image: shivan2418/main_repo:iparser
     volumes:
     - ./output:/app/output
+    - ./input:/app/input
     command: /bin/bash -c "python3 bin/parse-ingredients.py"
