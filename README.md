@@ -30,9 +30,9 @@ This pulls the image from my docker repo, run with default settings: directories
 ##### Docker-run
 Run the image directly from docker hub, you do not even need to download this github repo for this work. 
 The below command will again use `input` and `output` folder in the current directory. Change the paths to adjust the input and output folderss.
-* docker run --rm -v "$(pwd)"/output:/app/output -v "$(pwd)"/input:/app/input shivan2418/main_repo:iparser
+* `docker run --rm -v "$(pwd)"/output:/app/output -v "$(pwd)"/input:/app/input shivan2418/main_repo:iparser`
 
-#### Build locally and run
+##### Build locally and run
 If you want maximum control you can build the image locally and then run it.  
 * ```docker build -t iparser .```
 
