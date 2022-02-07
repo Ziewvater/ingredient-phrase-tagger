@@ -18,6 +18,8 @@ All the included presents (see below) will use `input` and `ouput` folders in th
 
 
 ## Running the image
+The image is avilable at `pull shivan2418/cdownloader:tagname`
+
 You can run the image in 3 ways:
 
 ##### Docker-compose
