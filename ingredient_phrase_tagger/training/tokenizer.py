@@ -11,7 +11,7 @@ def clumpFractions(s):
         # => "aaa 1$2/3 bbb"
     """
 
-    return re.sub(r'(\d+)\s+(\d)/(\d)', r'\1$\2/\3', s)
+    return re.sub(r"(\d+)\s+(\d)/(\d)", r"\1$\2/\3", s)
 
 
 def tokenize(s):
@@ -27,20 +27,26 @@ def tokenize(s):
     """
 
     # handle abbreviation like "100g" by treating it as "100 grams"
-    s = re.sub(r'(\d+)g', r'\1 grams', s)
-    s = re.sub(r'(\d+)oz', r'\1 ounces', s)
-    s = re.sub(r'(\d+)ml', r'\1 milliliters', s, flags=re.IGNORECASE)
+    s = re.sub(r"(\d+)g", r"\1 grams", s)
+    s = re.sub(r"(\d+)oz", r"\1 ounces", s)
+    s = re.sub(r"(\d+)ml", r"\1 milliliters", s, flags=re.IGNORECASE)
 
     american_units = [
-        'cup', 'tablespoon', 'teaspoon', 'pound', 'ounce', 'quart', 'pint'
+        "cup",
+        "tablespoon",
+        "teaspoon",
+        "pound",
+        "ounce",
+        "quart",
+        "pint",
     ]
     # The following removes slashes following American units and replaces it with a space.
     for unit in american_units:
-        s = s.replace(unit + '/', unit + ' ')
-        s = s.replace(unit + 's/', unit + 's ')
+        s = s.replace(unit + "/", unit + " ")
+        s = s.replace(unit + "s/", unit + "s ")
 
     return [
         token.strip()
-        for token in re.split(r'([,()\s]{1})', clumpFractions(s))
+        for token in re.split(r"([,()\s]{1})", clumpFractions(s))
         if token and token.strip()
     ]

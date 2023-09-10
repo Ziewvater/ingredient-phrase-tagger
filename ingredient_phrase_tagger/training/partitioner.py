@@ -1,8 +1,10 @@
-def split_labels(label_reader,
-                 training_label_writer,
-                 testing_label_writer,
-                 training_fraction,
-                 max_labels=0):
+def split_labels(
+    label_reader,
+    training_label_writer,
+    testing_label_writer,
+    training_fraction,
+    max_labels=0,
+):
     """Splits a full label set into a training and testing set.
 
     Given a full set of labels and associated inputs, splits up the labels
@@ -24,8 +26,9 @@ def split_labels(label_reader,
 
     """
     labels = _read_labels(label_reader, max_labels)
-    _write_labels(labels, training_label_writer, testing_label_writer,
-                  training_fraction)
+    _write_labels(
+        labels, training_label_writer, testing_label_writer, training_fraction
+    )
 
 
 def _read_labels(reader, max_labels):
@@ -37,8 +40,9 @@ def _read_labels(reader, max_labels):
     return labels
 
 
-def _write_labels(labels, training_label_writer, testing_label_writer,
-                  training_fraction):
+def _write_labels(
+    labels, training_label_writer, testing_label_writer, training_fraction
+):
     training_label_count = int(len(labels) * training_fraction)
     training_label_writer.writerows(labels[:training_label_count])
     testing_label_writer.writerows(labels[training_label_count:])

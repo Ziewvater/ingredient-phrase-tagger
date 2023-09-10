@@ -19,17 +19,16 @@ def translate_row(row):
             flour\tI3\tL4\tNoCAP\tNoPAREN\tB-NAME
     """
     # extract the display name
-    display_input = utils.cleanUnicodeFractions(row['input'])
+    display_input = utils.cleanUnicodeFractions(row["input"])
     tokens = tokenizer.tokenize(display_input)
 
     labels = _row_to_labels(row)
     label_data = _addPrefixes([(t, _matchUp(t, labels)) for t in tokens])
 
-    translated = ''
+    translated = ""
     for i, (token, tags) in enumerate(label_data):
         features = utils.getFeatures(token, i + 1, tokens)
-        translated += utils.joinLine([token] + features +
-                                     [_bestTag(tags)]) + '\n'
+        translated += utils.joinLine([token] + features + [_bestTag(tags)]) + "\n"
     return translated
 
 
@@ -43,7 +42,7 @@ def _row_to_labels(row):
         A dictionary of the label data extracted from the row.
     """
     labels = {}
-    label_keys = ['name', 'qty', 'range_end', 'unit', 'comment']
+    label_keys = ["name", "qty", "range_end", "unit", "comment"]
     for key in label_keys:
         labels[key] = row[key]
     return labels
@@ -57,16 +56,16 @@ def _parseNumbers(s):
     """
     ss = utils.unclump(s)
 
-    m3 = re.match('^\d+$', ss)
+    m3 = re.match("^\d+$", ss)
     if m3 is not None:
         return decimal.Decimal(round(float(ss), 2))
 
-    m1 = re.match(r'(\d+)\s+(\d)/(\d)', ss)
+    m1 = re.match(r"(\d+)\s+(\d)/(\d)", ss)
     if m1 is not None:
         num = int(m1.group(1)) + (float(m1.group(2)) / float(m1.group(3)))
         return decimal.Decimal(str(round(num, 2)))
 
-    m2 = re.match(r'^(\d)/(\d)$', ss)
+    m2 = re.match(r"^(\d)/(\d)$", ss)
     if m2 is not None:
         num = float(m2.group(1)) / float(m2.group(2))
         return decimal.Decimal(str(round(num, 2)))
@@ -95,7 +94,7 @@ def _matchUp(token, labels):
     decimalToken = _parseNumbers(token)
 
     # Iterate through the labels in descending order of label importance.
-    for label_key in ['name', 'unit', 'qty', 'comment', 'range_end']:
+    for label_key in ["name", "unit", "qty", "comment", "range_end"]:
         label_value = labels[label_key]
         if isinstance(label_value, str):
             for n, vt in enumerate(tokenizer.tokenize(label_value)):
@@ -121,7 +120,6 @@ def _addPrefixes(data):
     newData = []
 
     for n, (token, tags) in enumerate(data):
-
         newTags = []
 
         for t in tags:
@@ -135,7 +133,6 @@ def _addPrefixes(data):
 
 
 def _bestTag(tags):
-
     if len(tags) == 1:
         return tags[0]
 
