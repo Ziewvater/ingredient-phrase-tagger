@@ -25,7 +25,7 @@ def _exec_crf_test(input_text, model_path='/app/models/model.crfmodel'):
         except:
             pass
 
-def _convert_crf_output_to_json(crf_output):
+def _convert_crf_output_to_json(crf_output: list[str]):
     return utils.import_data(crf_output)
 
 
@@ -45,7 +45,7 @@ def main():
                 raw_ingredient_lines = json.load(f)
 
             crf_output = _exec_crf_test(raw_ingredient_lines)
-            crf_output = utils.import_data(crf_output.split('\n'))
+            crf_output = _convert_crf_output_to_json(crf_output.split("\n"))
 
             file_name = os.path.join(output_folder,file)
 
