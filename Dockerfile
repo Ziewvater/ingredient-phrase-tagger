@@ -13,4 +13,4 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 RUN pip3 install .
 
-CMD python3 bin/parse-ingredients.py
+CMD python3 bin/parse_ingredients.py

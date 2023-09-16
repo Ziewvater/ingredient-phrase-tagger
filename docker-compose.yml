@@ -4,4 +4,4 @@ services:
     volumes:
     - ./output:/app/output
     - ./input:/app/input
-    command: /bin/bash -c "python3 bin/parse-ingredients.py"
+    command: /bin/bash -c "python3 bin/parse_ingredients.py"
