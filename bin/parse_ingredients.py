@@ -52,6 +52,17 @@ def crf_output_from_file(
     )
 
 
+def write_crf_output(
+    crf_output,
+    output_folder: str,
+    filename: str,
+):
+    file_name = os.path.join(output_folder, filename)
+
+    with open(file_name, "w", encoding="utf-8") as f:
+        json.dump(crf_output, f, ensure_ascii=False)
+
+
 def main(
     input_folder: str = input_folder,
     output_folder: str = output_folder,
@@ -72,10 +83,11 @@ def main(
                 model_path=model_path,
             )
 
-            file_name = os.path.join(output_folder, file)
-
-            with open(file_name, "w", encoding="utf-8") as f:
-                json.dump(crf_output, f, ensure_ascii=False)
+            write_crf_output(
+                crf_output=crf_output,
+                output_folder=output_folder,
+                filename=file,
+            )
 
             bar.update(1)
 
