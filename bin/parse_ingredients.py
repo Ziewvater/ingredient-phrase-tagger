@@ -32,7 +32,10 @@ def _convert_crf_output_to_json(crf_output: list[str]):
     return utils.import_data(crf_output)
 
 
-def process_lines(ingredient_lines: list[str], model_path: str):
+def process_lines(
+    ingredient_lines: list[str],
+    model_path: str = None,
+):
     crf_output = _exec_crf_test(
         input_text=ingredient_lines,
         model_path=model_path,
@@ -42,13 +45,14 @@ def process_lines(ingredient_lines: list[str], model_path: str):
 
 def crf_output_from_file(
     file: str,
-    model_path: str,
+    model_path: str = None,
 ):
+    path = model_path or "bin/model/model.crfmodel"
     with open(os.path.join(input_folder, file), encoding="utf-8") as f:
         raw_ingredient_lines = json.load(f)
     return process_lines(
         ingredient_lines=raw_ingredient_lines,
-        model_path=model_path,
+        model_path=path,
     )
 
 
