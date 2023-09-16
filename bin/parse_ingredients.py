@@ -40,6 +40,18 @@ def process_lines(ingredient_lines: list[str], model_path: str):
     return _convert_crf_output_to_json(crf_output.split("\n"))
 
 
+def crf_output_from_file(
+    file: str,
+    model_path: str,
+):
+    with open(os.path.join(input_folder, file), encoding="utf-8") as f:
+        raw_ingredient_lines = json.load(f)
+    return process_lines(
+        ingredient_lines=raw_ingredient_lines,
+        model_path=model_path,
+    )
+
+
 def main(
     input_folder: str = input_folder,
     output_folder: str = output_folder,
@@ -55,11 +67,8 @@ def main(
             if file in files_in_output_folder:
                 continue
 
-            with open(os.path.join(input_folder, file), encoding="utf-8") as f:
-                raw_ingredient_lines = json.load(f)
-
-            crf_output = process_lines(
-                ingredient_lines=raw_ingredient_lines,
+            crf_output = crf_output_from_file(
+                file=file,
                 model_path=model_path,
             )
 
