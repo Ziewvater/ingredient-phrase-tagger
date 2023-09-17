@@ -47,7 +47,7 @@ def crf_output_from_file(
     file: str,
     model_path: str = None,
 ):
-    path = model_path or "ingredient_phrase_tagger/bin/model/model.crfmodel"
+    path = model_path or "bin/model/model.crfmodel"
     with open(os.path.join(input_folder, file), encoding="utf-8") as f:
         raw_ingredient_lines = json.load(f)
     return process_lines(
@@ -70,7 +70,7 @@ def write_crf_output(
 def main(
     input_folder: str = input_folder,
     output_folder: str = output_folder,
-    model_path: str = "ingredient_phrase_tagger/bin/model/model.crfmodel",
+    model_path: str = "bin/model/model.crfmodel",
 ):
     """Read all the files in inputs folder, place a parsed file in with the same name in the output folder"""
     files = os.listdir(input_folder)

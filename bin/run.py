@@ -26,7 +26,7 @@ def argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--model_path",
         "-m",
-        default="ingredient_phrase_tagger/bin/model/model.crfmodel",
+        default="bin/model/model.crfmodel",
         help="Path to the trained model to be used",
     )
     return parser
