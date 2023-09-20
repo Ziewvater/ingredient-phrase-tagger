@@ -5,7 +5,7 @@ import os
 import subprocess
 from tqdm import tqdm
 from ingredient_phrase_tagger.training import utils
-from folder_paths import input_folder, output_folder
+from .folder_paths import input_folder, output_folder
 
 
 def _exec_crf_test(
