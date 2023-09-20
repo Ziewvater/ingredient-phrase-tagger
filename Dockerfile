@@ -13,4 +13,4 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 RUN pip3 install .
 
-CMD python3 ingredient_phrase_tagger/processing/parse_ingredients.py
+CMD python3 ingredient_phrase_tagger/run.py

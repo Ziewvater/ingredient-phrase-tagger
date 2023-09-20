@@ -4,4 +4,4 @@ services:
     volumes:
     - ./output:/app/output
     - ./input:/app/input
-    command: /bin/bash -c "python3 ingredient_phrase_tagger/processing/parse_ingredients.py"
+    command: /bin/bash -c "python3 ingredient_phrase_tagger/run.py"

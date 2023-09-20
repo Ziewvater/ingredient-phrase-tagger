@@ -3,7 +3,6 @@
 import json
 import os
 import subprocess
-from tqdm import tqdm
 from ingredient_phrase_tagger.training import utils
 from .folder_paths import input_folder, output_folder
 
@@ -65,35 +64,6 @@ def write_crf_output(
 
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(crf_output, f, ensure_ascii=False)
-
-
-def main(
-    input_folder: str = input_folder,
-    output_folder: str = output_folder,
-    model_path: str = "bin/model/model.crfmodel",
-):
-    """Read all the files in inputs folder, place a parsed file in with the same name in the output folder"""
-    files = os.listdir(input_folder)
-    files_in_output_folder = os.listdir(output_folder)
-
-    with tqdm(total=len(files)) as bar:
-        for file in files:
-            # skip completed files
-            if file in files_in_output_folder:
-                continue
-
-            crf_output = crf_output_from_file(
-                file=file,
-                model_path=model_path,
-            )
-
-            write_crf_output(
-                crf_output=crf_output,
-                output_folder=output_folder,
-                filename=file,
-            )
-
-            bar.update(1)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-from .processing import parse_ingredients
+import os
+from .processing.parse_ingredients import crf_output_from_file, write_crf_output
 from .processing import folder_paths
+from tqdm import tqdm
 
 
 def argument_parser() -> argparse.ArgumentParser:
@@ -31,10 +33,39 @@ def argument_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def parse_ingredients(
+    input_folder: str = folder_paths.input_folder,
+    output_folder: str = folder_paths.output_folder,
+    model_path: str = "bin/model/model.crfmodel",
+):
+    """Read all the files in inputs folder, place a parsed file in with the same name in the output folder"""
+    files = os.listdir(input_folder)
+    files_in_output_folder = os.listdir(output_folder)
+
+    with tqdm(total=len(files)) as bar:
+        for file in files:
+            # skip completed files
+            if file in files_in_output_folder:
+                continue
+
+            crf_output = crf_output_from_file(
+                file=file,
+                model_path=model_path,
+            )
+
+            write_crf_output(
+                crf_output=crf_output,
+                output_folder=output_folder,
+                filename=file,
+            )
+
+            bar.update(1)
+
+
 def run():
     parser = argument_parser()
     args = parser.parse_args()
-    parse_ingredients.main(
+    parse_ingredients(
         input_folder=args.input_folder,
         output_folder=args.output_folder,
         model_path=args.model_path,
