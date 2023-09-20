@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-import parse_ingredients
-
-from folder_paths import input_folder, output_folder
+from .processing import parse_ingredients
+from .processing import folder_paths
 
 
 def argument_parser() -> argparse.ArgumentParser:
@@ -14,13 +13,13 @@ def argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--input_folder",
         "-i",
-        default=input_folder,
+        default=folder_paths.input_folder,
         help="Path to a directory containing the input files to be processed",
     )
     parser.add_argument(
         "--output_folder",
         "-o",
-        default=output_folder,
+        default=folder_paths.output_folder,
         help="Path to a directory where parsed ingredients are written",
     )
     parser.add_argument(
