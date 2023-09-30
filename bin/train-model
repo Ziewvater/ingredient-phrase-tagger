@@ -46,7 +46,7 @@ CRF_MODEL_FILE="${OUTPUT_DIR}/${MODEL_TIMESTAMP}-${DATA_VERSION}-${CODE_VERSION}
 TESTING_OUTPUT_FILE="${OUTPUT_DIR}/testing_output"
 EVAL_OUTPUT_FILE="${OUTPUT_DIR}/eval_output"
 
-bin/partition-labels.py \
+ingredient_phrase_tagger/training/partition-labels.py \
   --label-path="$LABELLED_DATA_FILE" \
   --training-path="$TRAINING_LABELS_FILE" \
   --testing-path="$TESTING_LABELS_FILE" \
