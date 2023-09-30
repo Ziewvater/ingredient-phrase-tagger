@@ -18,6 +18,7 @@ if [ -z "$1" ];
   then echo "Usage: train-prod-model output_dir" && exit 1;
 fi
 export OUTPUT_DIR="$1"
+export CRF_MODEL_NAME="model.crfmodel"
 
 # Train a new model.
 bin/train-model
