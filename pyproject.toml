@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ingredient-phrase-tagger"
+version = "0.1.0"
+description = "Extract structured data from ingredient phrases using conditional random fields"
+authors = [
+    "Jeremy <Jeremy.Y.Lawrence@gmail.com>", 
+    "The New York Times Company",
+]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tqdm = "^4.66.1"
+
+[tool.poetry.group.dev.dependencies]
+pyflakes = "^2.1.1"
+yapf = "^0.30"
+coverage = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
