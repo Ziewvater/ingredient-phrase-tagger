@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ingredient-phrase-tagger"
-version = "0.1.0"
+version = "0.1.1"
 description = "Extract structured data from ingredient phrases using conditional random fields"
 authors = [
     "Jeremy <Jeremy.Y.Lawrence@gmail.com>", 
