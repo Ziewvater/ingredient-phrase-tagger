@@ -60,3 +60,9 @@ sample_recipe.json
 vf new phrase-tagger
 pip install -r requirements
 ```
+
+## Training after changes
+
+```
+poetry run ./bin/train-prod-model ingredient_phrase_tagger/processing/model
+```
