@@ -27,9 +27,9 @@ def tokenize(s):
     """
 
     # handle abbreviation like "100g" by treating it as "100 grams"
-    s = re.sub(r"(\d+)g", r"\1 grams", s)
-    s = re.sub(r"(\d+)oz", r"\1 ounces", s)
-    s = re.sub(r"(\d+)ml", r"\1 milliliters", s, flags=re.IGNORECASE)
+    s = re.sub(r"(\d+\s?)g\b", r"\1 grams", s)
+    s = re.sub(r"(\d+\s?)oz\.?", r"\1 ounces", s)
+    s = re.sub(r"(\d+\s?)ml\b", r"\1 milliliters", s, flags=re.IGNORECASE)
 
     american_units = [
         "cup",
