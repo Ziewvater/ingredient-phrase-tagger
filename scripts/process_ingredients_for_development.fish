@@ -25,7 +25,11 @@ poetry run python -m ingredient_phrase_tagger.run
 
 # Format output files
 for file in app/output/*
+    # Format JSON
     poetry run python -m json.tool $file $file
+
+    # Remove lines with "display" key
+    grep -v '"display":' $file | string collect > $file
 end
 
 # Clean up created input files to avoid polluting future runs
