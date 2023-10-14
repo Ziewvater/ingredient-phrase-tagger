@@ -73,3 +73,12 @@ target/
 # asdf version manager
 .tool-versions
 /venv_linux/
+
+# Ignore testing inputs
+app/
+
+# Training products
+ingredient_phrase_tagger/processing/model/eval_output
+ingredient_phrase_tagger/processing/model/testing_output
+ingredient_phrase_tagger/processing/model/*.crf
+ingredient_phrase_tagger/processing/model/*.csv
